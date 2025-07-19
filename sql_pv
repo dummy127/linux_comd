@@ -86,3 +86,151 @@ select @userstat;
 
 
 
+-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025
+-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025-- 19-07-2025
+
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    marks INT
+);
+
+INSERT INTO students (name, marks) VALUES
+('Aarav', 85),
+('Bhavna', 42),
+('Chirag', 67),
+('Divya', 30),
+('Esha', 95);
+
+select * from students;
+
+delimiter $
+
+create function addition(a int , b int)
+returns int deterministic
+
+begin
+return a+b;
+end$
+
+create function subt(a int , b int)
+returns int deterministic
+begin 
+return a-b;
+end$
+
+create function oddeven(a int)
+returns boolean deterministic
+
+begin
+return a%2=0;
+end$
+
+create function vote(a int)
+returns varchar(20) deterministic
+begin 
+if a>17 then
+return "you can vote";
+end if;
+return " you cannot vote";
+end$
+
+create function price(a int)
+returns varchar(20) deterministic
+
+begin 
+if a>500 then
+return "Price is too high";
+end if;
+return "Price is too low";
+end$
+
+
+create function result(a int)
+returns varchar(20) deterministic
+begin 
+if a>40 then
+return "Successful result";
+end if;
+return "Failed result";
+end$
+
+create function showgrade(mar int)
+returns varchar(25) deterministic
+begin 
+ if mar between 1 and 40 then
+ return "your grade is C";
+  elseif mar between 41 and 60 then
+ return "your grade is B";
+  elseif mar between 61 and 100 then
+ return "your grade is A";
+ else 
+ return "Invalid input";
+ end if;
+end$
+
+create function payment(pr varchar(50))
+returns varchar(25) deterministic
+begin 
+ if pr = "Delivered" then
+ return "Payment is done";
+  elseif pr = "Cancelled" then
+ return "amount to be refunded";
+  elseif pr = "Placed" then
+ return "amount is processing";
+ else 
+ return "Invalid input";
+ end if;
+end$
+
+delimiter ;
+
+select * from orders;
+-- drop function payment;
+select addition(87,8);
+select subt(87,8);
+select vote(77);
+
+select order_id,addition(order_id,10),subt(order_id,7) from orders;
+
+select rest_id,addtion(rest_id,5) from orders;
+
+select oddeven(-78777770);
+
+select order_amount, price(order_amount) from orders;
+
+select marks,result(marks) from students;
+
+select marks,showgrade(marks) from students;
+
+select * from employee;
+
+select * from orders;
+
+select customer_name,order_status,payment(order_status) as pay_status from orders;
+
+
+
+delimiter $
+
+create procedure loopexample()
+begin 
+ declare n int;
+ set n=1;
+	firstloop:loop
+    if n=10 then 
+    leave firstloop;
+    end if ;
+    
+    select concat("hello world","hello world");
+    set n=n+1;
+    end loop firstloop;
+end$
+
+delimiter ;
+
+drop procedure loopexample;
+
+call loopexample();
+
+
