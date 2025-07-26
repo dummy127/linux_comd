@@ -234,3 +234,131 @@ drop procedure loopexample;
 call loopexample();
 
 
+
+-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025
+-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025-- 26/07/2025
+
+
+-- triggers triggers trigggers triggers
+
+-- before update 
+-- after update 
+
+-- before insert 
+-- after insert
+
+-- before delete
+-- after delete
+
+-- new old 
+
+
+select * from orders;
+
+drop table employee;
+
+Create Table employee ( eid int primary key, firstname varchar(50), lastname varchar(50), 
+pay_per_hr int, working_hours int, amount_to_pay int); 
+
+
+select * from employee;
+desc employee;
+
+
+delimiter $
+
+create trigger mytrigger
+before insert 
+on employee for each row 
+begin
+set new.amount_to_pay=new.pay_per_hr*new.working_hours;
+end$
+
+
+create trigger mytrigger2 
+before update
+on employee for each row 
+begin
+set new.amount_to_pay=new.pay_per_hr*new.working_hours;
+end$
+
+create trigger pre_pay 
+before update 
+on employee for each row 
+begin
+set new.pre_payroll=old.pay_per_hr;
+end$
+
+create trigger account_count
+before insert 
+on account for each row
+begin
+update user set total_acc = total_acc+1 where id=new.user_id;
+end$
+
+
+create trigger before_del
+before delete 
+on account
+for each row
+begin
+delete set 
+end
+
+delimiter ;
+
+
+
+insert into employee (eid,firstname,lastname,pay_per_hr,working_hours) values(101,"aradhya", "ambole" , 500,5);
+insert into employee (eid,firstname,lastname,pay_per_hr,working_hours) values(102,"rugved", "chavan" , 200,9);
+
+insert into employee (eid,firstname,lastname,pay_per_hr,working_hours) values(103,"pranay","borker",600,12);
+
+select * from employee;
+
+update employee set working_hours=24 where eid=103;
+
+update employee set pay_per_hr=244 where eid=103;
+
+alter table employee add column pre_payroll int;
+
+select * from employee;
+
+create table user(
+id int, 
+name varchar(30),
+total_acc int
+);
+create table account 
+(uid int,
+user_id int
+);
+
+create table college(
+c_id int (20) primary key,
+c_name varchar(50) not null,
+c_location varchar(255),
+c_rank int unique,
+c_students_ct int
+)
+
+delimiter $
+
+create procedure college_add(in c_id int, in c_name varchar(50), in c_location varchar(255),
+ in c_rank int, in c_students_ct int)
+ 
+begin
+declare continue handler for 1062
+begin
+select "Duplicate values";
+end;
+insert into college values (c_id,c_name,c_location,c_rank,c_students_ct);
+select "this is after insertion";
+end $
+
+delimiter ;
+
+call college_add(102,"royal college","bandra",10,500);
+
+select * from  college;
+
