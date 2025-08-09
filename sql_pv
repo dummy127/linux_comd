@@ -362,3 +362,47 @@ call college_add(102,"royal college","bandra",10,500);
 
 select * from  college;
 
+
+
+-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025
+-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025-- 09-08-2025
+
+-- declare --open --fetch  --close 
+delimiter $
+create procedure Curexe() 
+begin 
+declare sid int;
+declare sname varchar(25);
+DECLARE n INT;
+
+declare cur cursor for select rest_id,customer_name from orders;
+
+declare continue handler for 1329
+begin
+set n=1;
+end ;
+
+open cur;
+
+	firstloop:loop
+
+    if n=1 then
+    leave firstloop;
+    end if; 
+    fetch cur into sid,sname;
+	select sid,sname;
+    end loop firstloop;
+    
+close cur;
+END $
+delimiter ;
+
+call Curexe();
+
+
+
+
+
+
+
+
